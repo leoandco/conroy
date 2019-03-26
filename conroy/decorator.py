@@ -13,7 +13,7 @@ class Resource:
 class Hook(Resource):
     def __init__(self, callback, name=None):
         super().__init__(callback, name)
-        self.callback = self.func
+        self.func = callback
         self.regex = ''
 
     def __call__(self, *args, **kwargs):

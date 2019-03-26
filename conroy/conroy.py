@@ -1,3 +1,4 @@
+import functools
 import inspect
 import logging
 
@@ -8,7 +9,6 @@ class Conroy:
     logger = logging.getLogger('Conroy')
 
     def __init__(self):
-        self._hooks = []
         self._plugins = []
         self.resource = {}
         self.call = {}
@@ -28,7 +28,7 @@ class Conroy:
         """
         Register an instance of a ConroyPlugin.
 
-        :param ConroyPlugin plugin: Instance of plugin.
+        :param ConroyPlugin plugins: Instances of plugins.
         :return:
         """
         for plugin in plugins:
@@ -41,15 +41,17 @@ class Conroy:
 
                 if isinstance(attr, Hook):
                     self.logger.debug('Found hook {}.'.format(attr.name))
-                    self._hooks.append((plugin, attr))
 
                     def closure(f):
+                        @functools.wraps(f)
                         def wrap(*args, **kwargs):
                             return f(plugin, *args, **kwargs)
 
                         return wrap
 
-                    self.hooks['{}.{}'.format(plugin_name, attr.name)] = closure(attr.func)
+                    attr.func = closure(attr.func)
+
+                    self.hooks['{}.{}'.format(plugin_name, attr.name)] = attr
                 elif isinstance(attr, Resource):
                     self.logger.debug('Found resource {}.'.format(attr.name))
                     self.resource['{}.{}'.format(plugin_name, attr.name)] = attr.func(plugin)
@@ -61,10 +63,10 @@ class Conroy:
 
     def recv_msg(self, message):
         self.logger.debug('Received message: {}'.format(message))
-        for instance, hook in self._hooks:
+        for hook in self.hooks.values():
             m = hook.regex.match(message)
             if m:
                 self.logger.info('Calling hook {}.'.format(hook.name))
-                signature = inspect.signature(hook.callback).parameters.keys()
-                reply = hook.callback(instance, **{k: v for k, v in m.groupdict().items() if k in signature})
+                signature = inspect.signature(hook.func).parameters.keys()
+                reply = hook.func(**{k: v for k, v in m.groupdict().items() if k in signature})
                 print(reply)
