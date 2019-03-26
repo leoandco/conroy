@@ -2,7 +2,7 @@ import logging
 import sys
 
 import conroy
-from conroy.plugin import Google, Selenium, DuckDuckGo, AutoHotkey
+from conroy.plugin import Google, Selenium, DuckDuckGo, AutoHotkey, Wikipedia
 
 root = logging.getLogger()
 root.setLevel(logging.DEBUG)
@@ -14,7 +14,5 @@ handler.setFormatter(formatter)
 root.addHandler(handler)
 
 c = conroy.Conroy()
-c.register_plugin(Selenium(), Google(), DuckDuckGo(), AutoHotkey())
-c.recv_msg('docs sendkey')
-
-
+c.register_plugin(Selenium(), Google(), DuckDuckGo(), AutoHotkey(), Wikipedia())
+c.recv_msg('g ahk')
