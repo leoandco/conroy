@@ -13,6 +13,6 @@ formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(messag
 handler.setFormatter(formatter)
 root.addHandler(handler)
 
-c = conroy.Conroy()
+c = conroy.Conroy('!')
 c.register_plugin(Selenium(), Google(), DuckDuckGo(), AutoHotkey(), Wikipedia())
-c.recv_msg('g ahk')
+c.recv_msg('!g ahk')

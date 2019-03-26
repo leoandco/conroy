@@ -8,11 +8,12 @@ from .decorator import Hook, Resource
 class Conroy:
     logger = logging.getLogger('Conroy')
 
-    def __init__(self):
+    def __init__(self, trigger):
         self._plugins = []
-        self.resource = {}
         self.call = {}
         self.hooks = {}
+        self.resource = {}
+        self.trigger = trigger
 
     def __del__(self):
         """
@@ -63,6 +64,9 @@ class Conroy:
 
     def recv_msg(self, message):
         self.logger.debug('Received message: {}'.format(message))
+        if not message.startswith(self.trigger):
+            return
+        message = message[len(self.trigger):]
         for hook in self.hooks.values():
             m = hook.regex.match(message)
             if m:
