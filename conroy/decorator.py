@@ -4,7 +4,7 @@ import re
 class Resource:
     def __init__(self, func, name=None):
         self.func = func
-        self.name = name if name else self.func.__name__
+        self.name = name or self.func.__name__
 
     def __call__(self, *args, **kwargs):
         return self.func
