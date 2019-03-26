@@ -1,7 +1,7 @@
 import logging
 
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from ..decorator import resource
 from ..plugin.conroyplugin import ConroyPlugin
@@ -12,22 +12,14 @@ class Selenium(ConroyPlugin):
 
     def __init__(self):
         super().__init__()
-        self._chrome_options = None
         self._driver = None
 
     def load(self):
-        self._driver = webdriver.Chrome(options=self._chrome_options)
-
-    def unload(self):
-        self._driver.close()
+        self._driver = webdriver.Remote(command_executor='http://selenium:4444/wd/hub', desired_capabilities={
+            **DesiredCapabilities.CHROME,
+            'javascriptEnabled': False
+        })
 
     @resource()
     def driver(self):
-        self._chrome_options = Options()
-        self._chrome_options.add_argument('--disable-gpu')
-        self._chrome_options.add_experimental_option('prefs', {
-            'profile.managed_default_content_settings.javascript': 2,  # disable js
-            'profile.default_content_setting_values.images': 2  # disable loading images
-        })
-
         return self._driver
