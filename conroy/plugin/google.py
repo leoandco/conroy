@@ -2,9 +2,9 @@ import logging
 
 from selenium.common.exceptions import NoSuchElementException, InvalidSelectorException
 
-from ..decorator import hook, parameter
-from ..plugin.conroyplugin import ConroyPlugin
-from ..utils import truncate_ellipses
+from conroy.decorator import hook, parameter
+from conroy.plugin.conroyplugin import ConroyPlugin
+from conroy.utils import truncate_ellipses
 
 
 class Google(ConroyPlugin):

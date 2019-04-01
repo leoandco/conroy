@@ -2,7 +2,7 @@ import functools
 import inspect
 import logging
 
-from .decorator import Hook, Resource
+from conroy.decorator import Hook, Resource
 
 
 class Conroy:

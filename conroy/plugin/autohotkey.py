@@ -1,5 +1,5 @@
-from ..decorator import hook, parameter
-from ..plugin.conroyplugin import ConroyPlugin
+from conroy.decorator import hook, parameter
+from conroy.plugin.conroyplugin import ConroyPlugin
 
 
 class AutoHotkey(ConroyPlugin):

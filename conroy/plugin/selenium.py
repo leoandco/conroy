@@ -3,8 +3,8 @@ import logging
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
-from ..decorator import resource
-from ..plugin.conroyplugin import ConroyPlugin
+from conroy.decorator import resource
+from conroy.plugin.conroyplugin import ConroyPlugin
 
 
 class Selenium(ConroyPlugin):

@@ -1,2 +1,2 @@
-from .conroy import *
-from .decorator import *
+from conroy.conroy import *
+from conroy.decorator import *
