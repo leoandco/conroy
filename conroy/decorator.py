@@ -30,7 +30,11 @@ class Hook(Resource):
         return decorated
 
     def bake(self):
-        self.regex = re.compile(r'(?P<hook>{name})\s+{rest}'.format(name=self.name, rest=self.regex))
+        pattern = r'(?P<hook>{name})'
+        if self.regex:
+            pattern += '\s+{rest}'
+
+        self.regex = re.compile(pattern.format(name=self.name, rest=self.regex))
 
 
 def hook(name=None):
