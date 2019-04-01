@@ -32,7 +32,7 @@ class Hook(Resource):
     def bake(self):
         pattern = r'(?P<hook>{name})'
         if self.regex:
-            pattern += '\s+{rest}'
+            pattern += r'\s+{rest}'
 
         self.regex = re.compile(pattern.format(name=self.name, rest=self.regex))
 
