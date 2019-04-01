@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+  oragono:
+    image: oragono/oragono
+    expose:
+      - 6667

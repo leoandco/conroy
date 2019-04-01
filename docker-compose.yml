@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  znc:
+    image: znc
+    volumes:
+      - znc-data:/znc-data
+    expose:
+      - 6667
+
+  selenium:
+    image: selenium/standalone-chrome
+    volumes:
+      - /dev/shm:/dev/shm
+    expose:
+      - 4444
+
+  conroy:
+    image: conroy
+    build: .
+    depends_on:
+      - selenium
+      - znc
+
+volumes:
+  znc-data:
+    driver: local
