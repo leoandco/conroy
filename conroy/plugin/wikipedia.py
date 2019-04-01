@@ -2,6 +2,7 @@ import requests
 
 from conroy.decorator import hook, parameter
 from conroy.plugin.conroyplugin import ConroyPlugin
+from conroy.utils import truncate_ellipses, truncate_newline
 
 
 class Wikipedia(ConroyPlugin):
@@ -15,4 +16,4 @@ class Wikipedia(ConroyPlugin):
         if not (suggestions and summaries and links):
             return 'No results found.'
 
-        return ['{} - {}'.format(suggestions[0], links[0]), summaries[0]]
+        return ['{} - {}'.format(truncate_newline(suggestions[0]), links[0]), truncate_ellipses(truncate_newline(summaries[0]), 384)]

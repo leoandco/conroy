@@ -4,7 +4,7 @@ from selenium.common.exceptions import NoSuchElementException, InvalidSelectorEx
 
 from conroy.decorator import hook, parameter
 from conroy.plugin.conroyplugin import ConroyPlugin
-from conroy.utils import truncate_ellipses
+from conroy.utils import truncate_ellipses, truncate_newline
 
 
 class Google(ConroyPlugin):
@@ -16,9 +16,9 @@ class Google(ConroyPlugin):
             self.resource['Selenium.driver'].get('https://google.com/search?q={}'.format(query))
 
             result = self.resource['Selenium.driver'].find_element_by_css_selector('#rso > div:nth-child(1) > div > div')
-            title = result.find_element_by_css_selector('div > div > div.r > a').text
+            title = truncate_newline(result.find_element_by_css_selector('div > div > div.r > a').text)
             url = result.find_element_by_css_selector('div > div > div.r > a').get_attribute('href')
-            description = truncate_ellipses(result.find_element_by_css_selector('div > div.s > div > span').text, 384)
+            description = truncate_ellipses(truncate_newline(result.find_element_by_css_selector('div > div.s > div > span').text), 384)
 
             return ['{} - {}'.format(title, url), description]
         except (NoSuchElementException, InvalidSelectorException) as e:
