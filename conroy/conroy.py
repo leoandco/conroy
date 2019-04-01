@@ -73,4 +73,4 @@ class Conroy:
                 self.logger.info('Calling hook {}.'.format(hook.name))
                 signature = inspect.signature(hook.func).parameters.keys()
                 reply = hook.func(**{k: v for k, v in m.groupdict().items() if k in signature})
-                print(reply)
+                return reply

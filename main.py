@@ -1,18 +1,26 @@
-import logging
-import sys
+import irc.bot
+import irc.strings
 
-import conroy
-from conroy.plugin import Google, Selenium, DuckDuckGo, AutoHotkey, Wikipedia
+from conroy import Conroy
+from conroy.plugin import Selenium, Google, DuckDuckGo, AutoHotkey, Wikipedia
 
-root = logging.getLogger()
-root.setLevel(logging.DEBUG)
 
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-root.addHandler(handler)
+class Bot(irc.bot.SingleServerIRCBot):
+    def __init__(self):
+        irc.bot.SingleServerIRCBot.__init__(self, [('znc', 6667, 'conroy')], 'conroy', 'conroy', username='conroy')
 
-c = conroy.Conroy('!')
-c.register_plugin(Selenium(), Google(), DuckDuckGo(), AutoHotkey(), Wikipedia())
-c.recv_msg('!g ahk')
+        self.conroy = Conroy('!')
+        self.conroy.register_plugin(Selenium(), Google(), DuckDuckGo(), AutoHotkey(), Wikipedia())
+
+    def on_pubmsg(self, c, e):
+        reply = self.conroy.recv_msg(e.arguments[0])
+
+        if reply:
+            reply = [reply] if type(reply) is not list else reply
+            for line in reply:
+                self.connection.privmsg(e.target, line)
+
+
+if __name__ == '__main__':
+    bot = Bot()
+    bot.start()
