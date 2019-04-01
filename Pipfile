@@ -6,9 +6,7 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-requests = "*"
-beautifulsoup4 = "*"
 selenium = "*"
-
-[requires]
-python_version = "3.7"
+beautifulsoup4 = "*"
+requests = "*"
+irc = "*"
